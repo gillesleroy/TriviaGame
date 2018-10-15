@@ -6,14 +6,18 @@
 
 var questions = [
     { q: "When did the Beatles form?", a:1 , r: ["1958","1960","1961","1968"] },
-    { q: "Where did the Beatles form?", a:2, r: ["London","Portsmouth","Liverpool","Hanover"] }
-  ];
+    { q: "Where did the Beatles form?", a:2, r: ["London","Hamburg","Liverpool","Hanover"] },
+    { q: "What was the Beatles first Hit Record in the US?", a:3, r: ["Let it Be","Hey Jude","Please Please Me","Love Me Do"] },
+    { q: "When did the Beatles have their first hit record?", a:1, r: ["1960","1962","1963","1964"] },
+    { q: "When did the Beatles break up?", a:0, r: ["1970","1978","1980","1985"] },
+    { q: "Who left the Beatles first?", a:2, r: ["John Lennon ","Paul Mc Cartney","Ringo Starr","Georges Harrison"] }
+];
 // alert ("Go");
-var timeQuestion = setTimeout( function() {
-    $("#s-remain").text("Over 30 Sec");
-}
-,30000
-); 
+// var timeQuestion = setTimeout( function() {
+//     $("#s-remain").text("Over 30 Sec");
+// }
+// ,30000
+// ); 
 
 for (i=0;i<questions[0].r.length;i++)
 {
@@ -26,7 +30,6 @@ for (i=0;i<questions[0].r.length;i++)
 
     // console.log(questions[q].r);
 }
-
 
 var inter;
 var isRunning = false;
@@ -46,15 +49,43 @@ var trivia = {
     var correctAnswer = questions[q].a;
     var userAnswer = parseInt($(o).attr("answer-value"));
 
-    // if (q === parseInt($(o).attr("answer-value")))
     if (correctAnswer === userAnswer)
        {
-           alert("You Win!");
+        //    alert("You Win!");
+           $("#div-2").html("<h2 class='question-text' >Your Answer is Correct!</h2>");
        }
     else
        {
-        alert("You Lose!");
+        // alert("You Lose!");
+        var line1 = "<h2 class='question-text' >Nope!</h2>";
+        var line2 = "<h2 class='question-text' >The Correct Answer was: "+questions[q].r[correctAnswer]+"</h2>";
+        $("#div-2").html(line1+line2);
+    //     $("#div-2").html("<h2 class='question-text' >Nope!</h2>");
+    //     $("#div-3").html("<h2 class='question-text' >The Correct Answer was: "+questions[q].r[correctAnswer]+"</h2>");    
        }
+       
+     var timeNext = setTimeout( function() 
+        {
+        clearInterval(inter);
+        isRunning = false;
+        trivia.timeRound = 30; 
+        questionIdx++;
+            if (questionIdx < questions.length)
+               {
+                trivia.start();
+                // inter = setInterval(trivia.count, 1000);
+                // $("#div-1").html("<h2 class='text-center'>Time Remaining <span id='s-remain'>"+" "+trivia.timeRound+" Sec</span><h2>");
+                // trivia.renderQuestion(questionIdx);
+                // trivia.renderAnswers(questionIdx);
+               }
+            else
+            {
+                $("#div-1").html("<h2>End of the Game</h2>");
+                // alert("End of the games");
+            }
+        }
+        ,2000
+        ); 
     },
     
     start: function() {
@@ -64,10 +95,11 @@ var trivia = {
         inter = setInterval(trivia.count, 1000);
         isRunning = true;
         $("#div-1").html("<h2 class='text-center'>Time Remaining <span id='s-remain'>"+" "+trivia.timeRound+" Sec</span><h2>");
-        trivia.renderAnswers(trivia.questionNum);
-        trivia.renderQuestion(trivia.questionNum);
+        trivia.renderAnswers(questionIdx);
+        trivia.renderQuestion(questionIdx);
        }
     },
+
     count: function() {
         trivia.time++;
         trivia.timeRound = trivia.timeRound - 1;
@@ -102,20 +134,13 @@ var trivia = {
         }
     },
 
-    convert: function(t) {
-    var minutes = Math.floor(t / 60);
-    var seconds = t - (minutes * 60);
-    if (seconds < 10) {
-        seconds = "0" + seconds;
-    }
-    if (minutes === 0) {
-        minutes = "00";
-    }
-    else if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
-    return minutes + ":" + seconds;
-    }
+    // clearAnswers: function(q) {
+    //     // $("#div-3").html("");
+    //         for (i=0;i<questions[q].r.length;i++)
+    //         {
+    //             $("#button"+i).text("");
+    //         }
+    //     },
   
   }
 
