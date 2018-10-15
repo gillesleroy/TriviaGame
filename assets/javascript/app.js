@@ -39,13 +39,17 @@ var trivia = {
 
     time: 0,
     timeRound: 30,
-    questionNum: 0,
+    // questionNum: 0,
 
     test: function(o,q)
     {
     // console.log(o);
-    console.log($(o).attr("answer-value"));
-    console.log(q);
+    if (isRunning)
+    {
+    clearInterval(inter);
+    isRunning = false;
+    // console.log($(o).attr("answer-value"));
+    // console.log(q);
     var correctAnswer = questions[q].a;
     var userAnswer = parseInt($(o).attr("answer-value"));
 
@@ -66,8 +70,8 @@ var trivia = {
        
      var timeNext = setTimeout( function() 
         {
-        clearInterval(inter);
-        isRunning = false;
+        // clearInterval(inter);
+        // isRunning = false;
         trivia.timeRound = 30; 
         questionIdx++;
             if (questionIdx < questions.length)
@@ -80,12 +84,22 @@ var trivia = {
                }
             else
             {
+                trivia.clearAnswers(0);
                 $("#div-1").html("<h2>End of the Game</h2>");
-                // alert("End of the games");
+                $("#div-2").html("");
+                var timeRestart = setTimeout( function()
+                {
+                    $("#div-1").html("<button id='b-start'>Start</button>");
+                    // alert("End of the games");
+                },
+                2000
+            );
+
             }
         }
-        ,2000
+        ,3000
         ); 
+    }
     },
     
     start: function() {
@@ -134,18 +148,18 @@ var trivia = {
         }
     },
 
-    // clearAnswers: function(q) {
-    //     // $("#div-3").html("");
-    //         for (i=0;i<questions[q].r.length;i++)
-    //         {
-    //             $("#button"+i).text("");
-    //         }
-    //     },
+    clearAnswers: function(q) {
+        // $("#div-3").html("");
+            for (i=0;i<questions[q].r.length;i++)
+            {
+                $("#button"+i).text("");
+            }
+        },
   
   }
 
 $(document).ready(function() {
-    $("#s-remain").text(" "+trivia.timeRound+" Sec");
+    // $("#s-remain").text(" "+trivia.timeRound+" Sec");
     $("#b-start").on("click",trivia.start);
     // $(".answer-button").on("click",trivia.test);
     $(".answer-button").on("click",function() {
