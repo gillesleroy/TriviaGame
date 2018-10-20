@@ -34,8 +34,13 @@ body {
     width: 150px;
     border: solid 1px #20bea9;
 }
+.button{
+    width: 150px;
+    border: solid 1px #20bea9;
+}
 .answer-button{
     /* width: 250px; */
     /* border: solid 1px #1d534c;   */
+    
     /* display:block; */
 }
